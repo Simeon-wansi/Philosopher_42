@@ -55,7 +55,7 @@ static long ft_atol(const char *str)
 }
 int parse_input(t_table *table, char **av)
 {
-	if (ft_atol(av[1]) > 200)
+	if (ft_atol(av[1]) > MAX_PHILOSOPHERS)
 	{
 		printf("Error: Number of philosophers must be less than 200\n");
 		return (1);

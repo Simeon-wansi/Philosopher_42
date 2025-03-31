@@ -6,20 +6,33 @@
 /*   By: sngantch <sngantch@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 12:55:23 by sngantch          #+#    #+#             */
-/*   Updated: 2025/03/31 19:31:52 by sngantch         ###   ########.fr       */
+/*   Updated: 2025/03/31 20:29:00 by sngantch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
-#include <math.h>
+
+int find_min(int a , int b)
+{
+    if (a < b)
+        return (a);
+    return (b);
+}
+
+int find_max(int a , int b)
+{
+    if (a > b)
+        return (a); 
+    return (b);
+}
 
 static void eat_sleep_think(t_philo *philo)
 {
     int		first_fork;
 	int		second_fork;
 
-    first_fork = fmin(philo->left_fork, philo->right_fork);
-	second_fork = fmax(philo->left_fork, philo->right_fork);
+    first_fork = find_min(philo->left_fork, philo->right_fork);
+	second_fork = find_max(philo->left_fork, philo->right_fork);
     pthread_mutex_lock(&philo->table->fork_mutex[first_fork]);
     write_status(philo, TAKE_LEFT_FORK);
     // printf("Debug : philo nb %ld\n", philo->table->philo_nbr);
