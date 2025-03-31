@@ -6,7 +6,7 @@
 /*   By: sngantch <sngantch@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 12:55:23 by sngantch          #+#    #+#             */
-/*   Updated: 2025/03/31 16:27:39 by sngantch         ###   ########.fr       */
+/*   Updated: 2025/03/31 19:31:52 by sngantch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static void eat_sleep_think(t_philo *philo)
 	second_fork = fmax(philo->left_fork, philo->right_fork);
     pthread_mutex_lock(&philo->table->fork_mutex[first_fork]);
     write_status(philo, TAKE_LEFT_FORK);
+    // printf("Debug : philo nb %ld\n", philo->table->philo_nbr);
     if (philo->table->philo_nbr == 1)
     {
         precise_usleep(philo->table->time_to_die, philo->table);
@@ -35,6 +36,9 @@ static void eat_sleep_think(t_philo *philo)
     pthread_mutex_lock(&philo->meal_mutex);
     philo->last_meal_time = gettime();
     philo->meal_counter++;
+    if (philo->meal_counter == philo->table->nbr_limit_meal)
+        philo->full = true;
+    // printf("debug :%ld %d has taken a fork\n", gettime(), philo->id);
     pthread_mutex_unlock(&philo->meal_mutex);
     precise_usleep(philo->table->time_to_eat, philo->table);
     philo->is_eating = false;

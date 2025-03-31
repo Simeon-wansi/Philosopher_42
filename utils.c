@@ -21,8 +21,6 @@ void precise_usleep(long time, t_table *table)
 	long remaining;
 
 	start  =  gettime();
-	// printf("Debug: start = %ld\n", start);
-	// printf("Debug: time = %ld\n", time);
 	while(!table->death)
 	{
 		elapsed = gettime() - start;
@@ -47,9 +45,9 @@ void	write_status(t_philo *philo, t_philo_status status)
 		return ;
 	pthread_mutex_lock(&philo->table->write_mutex);
 	if (status == TAKE_LEFT_FORK && !philo->table->death)
-		printf("%ld %d has taken the left fork\n", elapsed, philo->id);
+		printf("%-6ld %d has taken the left fork\n", elapsed, philo->id);
 	else if (status == TAKE_RIGHT_FORK && !philo->table->death)
-		printf("%ld %d has taken the right fork\n", elapsed, philo->id);
+		printf("%-6ld %d has taken the right fork\n", elapsed, philo->id);
 	else if (status == EATING && !philo->table->death)
 		printf("%-6ld %d is eating\n", elapsed, philo->id);
 	else if (status == SLEEPING && !philo->table->death)
@@ -74,4 +72,6 @@ void cleanup_ressources(t_table *table)
     }
     pthread_mutex_destroy(&table->table_mutex);
     pthread_mutex_destroy(&table->write_mutex);
+	pthread_mutex_destroy(&table->monitor_mutex);
+	pthread_mutex_destroy(&table->death_mutex);
 }

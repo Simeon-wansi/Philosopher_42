@@ -6,7 +6,7 @@
 /*   By: sngantch <sngantch@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 12:36:13 by sngantch          #+#    #+#             */
-/*   Updated: 2025/03/31 16:09:01 by sngantch         ###   ########.fr       */
+/*   Updated: 2025/03/31 19:28:29 by sngantch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,55 +28,62 @@ static int is_philo_dead(t_philo *philo)
     return (0);
 }
 
-static int check_dead_philos(t_philo *philos)
+static int check_dead_philos(t_table *table)
 {
     int i = 0;
 
     i = -1;
-    while(++i < philos->table->philo_nbr)
+    while(++i < table->philo_nbr)
     {
-        if (is_philo_dead(&philos[i]))
+        if (is_philo_dead(&table->philo[i]))
         {
-            write_status(&philos[i], DIED);
-            pthread_mutex_lock(&philos->table->table_mutex);
-            philos->table->death = true;
-            pthread_mutex_unlock(&philos->table->table_mutex);
+            write_status(&table->philo[i], DIED);
+            pthread_mutex_lock(&table->death_mutex);
+            table->death = true;
+            pthread_mutex_unlock(&table->death_mutex);
             return (1);
         }
     }
     return (0);
 }
 
-static int all_phios_have_eatean(t_philo *philos)
+static int all_phios_have_eatean(t_table *table)
 {
     int i;
 
     i = -1;
-    while(++i < philos->table->philo_nbr)
+    if (table->nbr_limit_meal == -1)
+        return (0);
+    // while(++i < philos->table->philo_nbr)
+    // {
+    //     pthread_mutex_lock(&philos[i].philo_mutex);
+    //     if (philos[i].meal_counter < philos[i].table->nbr_limit_meal)
+    //     {
+    //         pthread_mutex_unlock(&philos[i].philo_mutex);
+    //         return (0);
+    //     }
+    //     pthread_mutex_unlock(&philos[i].philo_mutex);
+    // }
+    while(++i < table->philo_nbr)
     {
-        pthread_mutex_lock(&philos[i].philo_mutex);
-        if (philos[i].meal_counter < philos[i].table->nbr_limit_meal)
-        {
-            pthread_mutex_unlock(&philos[i].philo_mutex);
+        if (table->philo[i].full == false)
             return (0);
-        }
-        pthread_mutex_unlock(&philos[i].philo_mutex);
     }
-    pthread_mutex_lock(&philos->table->table_mutex);
-    philos->table->all_ate = true;
-    pthread_mutex_unlock(&philos->table->table_mutex);
+    pthread_mutex_lock(&table->monitor_mutex);
+    table->all_ate = true;
+    pthread_mutex_unlock(&table->monitor_mutex);
     return (1);
 }
 
 void *monitor_routine(void *arg)
 {
-    t_philo *philos;
+    t_table *table;
     
-    philos = (t_philo *)arg;
+    table = (t_table *)arg;
     
     while(1)
     {
-        if (check_dead_philos(philos) || all_phios_have_eatean(philos))
+        if (check_dead_philos(table) || all_phios_have_eatean(table))
             break;
     }
     return(arg);

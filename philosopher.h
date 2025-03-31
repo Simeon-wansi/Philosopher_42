@@ -44,7 +44,9 @@ typedef struct s_table
     t_mutex fork_mutex[MAX_PHILOSOPHERS]; 
     t_philo philo[MAX_PHILOSOPHERS];
     t_mutex write_mutex;
+    t_mutex death_mutex;
     t_mutex table_mutex;
+    t_mutex monitor_mutex;
     pthread_t monitor_thread;
 }               t_table;
 

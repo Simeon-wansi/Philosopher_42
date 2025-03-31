@@ -10,16 +10,19 @@ int main(int ac, char **av)
             return (1);
         if (data_init(&table) != 0)
             return (1);
+        // printf("Debug : input succes\n");
         if (create_threads(&table) != 0)
         {
             cleanup_ressources(&table);
             return (1);
         }
+        // printf("Debug : create thread success\n");
         if (join_threads(&table) != 0)
         {
             cleanup_ressources(&table);
             return (1);
         }
+        // printf("Debug : Join  thread success\n");
         cleanup_ressources(&table);
     }
     else

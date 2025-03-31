@@ -18,7 +18,9 @@ int	data_init(t_table *table)
 		}
 	}
 	if (pthread_mutex_init(&table->table_mutex, NULL) != 0 ||
-		pthread_mutex_init(&table->write_mutex, NULL) != 0)
+		pthread_mutex_init(&table->write_mutex, NULL) != 0 ||
+		pthread_mutex_init(&table->monitor_mutex, NULL) != 0 ||
+		pthread_mutex_init(&table->death_mutex, NULL) != 0)
 	{
 		printf("Mutex initialisation failed\n");
 		return (1);
@@ -41,5 +43,13 @@ int	data_init(t_table *table)
 	}
 	table->death = false;
 	table->all_ate = false;
+	table->start_simulation =  gettime();
+	// printf("Debug : table->start_simulation = %ld\n", table->start_simulation);
+	// printf("Debug : table->time_to_die = %ld\n", table->time_to_die);
+	// printf("Debug : table->time_to_sleep = %ld\n", table->time_to_sleep);
+	// printf("Debug : table->time_to_eat = %ld\n", table->time_to_eat);
+	// printf("Debug : table->philo_nbr = %ld\n", table->philo_nbr);
+	// printf("Debug : table->nbr_limit_meal = %ld\n", table->nbr_limit_meal);
+
 	return (0);
 }
