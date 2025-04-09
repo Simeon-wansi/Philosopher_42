@@ -6,7 +6,7 @@
 /*   By: sngantch <sngantch@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 21:10:18 by sngantch          #+#    #+#             */
-/*   Updated: 2025/04/02 13:03:13 by sngantch         ###   ########.fr       */
+/*   Updated: 2025/04/09 18:12:53 by sngantch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,13 @@ void	write_status(t_philo *philo, t_philo_status status)
 {
 	long	elapsed;
 
+	pthread_mutex_lock(&philo->table->write_mutex);
 	elapsed = gettime() - philo->table->start_simulation;
 	if (philo->full)
+	{
+		pthread_mutex_unlock(&philo->table->write_mutex);
 		return ;
-	pthread_mutex_lock(&philo->table->write_mutex);
+	}
 	if (status == TAKE_LEFT_FORK && !philo->table->death)
 		printf("%-6ld %d has taken a fork\n", elapsed, philo->id);
 	else if (status == TAKE_RIGHT_FORK && !philo->table->death)

@@ -6,7 +6,7 @@
 /*   By: sngantch <sngantch@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 12:36:13 by sngantch          #+#    #+#             */
-/*   Updated: 2025/04/09 08:29:57 by sngantch         ###   ########.fr       */
+/*   Updated: 2025/04/09 19:08:15 by sngantch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	is_philo_dead(t_philo *philo)
 static int	check_dead_philos(t_table *table)
 {
 	int	i;
-
+	pthread_mutex_lock(&table->death_mutex);
 	i = 0;
 	i = -1;
 	while (++i < table->philo_nbr)
@@ -38,28 +38,30 @@ static int	check_dead_philos(t_table *table)
 		if (is_philo_dead(&table->philo[i]))
 		{
 			write_status(&table->philo[i], DIED);
-			pthread_mutex_lock(&table->death_mutex);
+			
 			table->death = true;
 			pthread_mutex_unlock(&table->death_mutex);
 			return (1);
 		}
 	}
+	pthread_mutex_unlock(&table->death_mutex);
 	return (0);
 }
 
 static int	all_philos_have_eatean(t_table *table)
 {
 	int	i;
-
+	
+	pthread_mutex_lock(&table->monitor_mutex);
 	i = -1;
 	if (table->nbr_limit_meal == -1)
 		return (0);
 	while (++i < table->philo_nbr)
 	{
 		if (table->philo[i].full == false)
-			return (0);
+			return (pthread_mutex_unlock(&table->monitor_mutex), 0);
 	}
-	pthread_mutex_lock(&table->monitor_mutex);
+	
 	table->all_ate = true;
 	pthread_mutex_unlock(&table->monitor_mutex);
 	return (1);

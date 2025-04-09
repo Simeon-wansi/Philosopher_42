@@ -6,7 +6,7 @@
 /*   By: sngantch <sngantch@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 12:55:23 by sngantch          #+#    #+#             */
-/*   Updated: 2025/04/07 22:01:38 by sngantch         ###   ########.fr       */
+/*   Updated: 2025/04/09 19:08:40 by sngantch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static void	eat_sleep_think(t_philo *philo)
 	if (fork_assign(philo) != 0)
 		return ;
 	write_status(philo, EATING);
-	philo->is_eating = true;
+	philo->is_eating = true; // Move this
 	pthread_mutex_lock(&philo->meal_mutex);
 	philo->last_meal_time = gettime();
 	precise_usleep(philo->table->time_to_eat, philo->table);
@@ -56,7 +56,7 @@ static void	eat_sleep_think(t_philo *philo)
 	if (philo->meal_counter == philo->table->nbr_limit_meal)
 		philo->full = true;
 	pthread_mutex_unlock(&philo->meal_mutex);
-	philo->is_eating = false;
+	philo->is_eating = false; // Move this
 	release_fork(philo);
 	write_status(philo, SLEEPING);
 	precise_usleep(philo->table->time_to_sleep, philo->table);

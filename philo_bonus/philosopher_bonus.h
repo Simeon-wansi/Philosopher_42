@@ -6,21 +6,24 @@
 /*   By: sngantch <sngantch@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:07:51 by sngantch          #+#    #+#             */
-/*   Updated: 2025/04/09 08:52:34 by sngantch         ###   ########.fr       */
+/*   Updated: 2025/04/09 17:26:31 by sngantch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILOSOPHER_BONUS_H
 # define PHILOSOPHER_BONUS_H
 
-# include <stdio.h>
-# include <limits.h>
-# include <stdlib.h>
-# include <semaphore.h>
-# include <signal.h>
-# include <sys/time.h>
-# include <unistd.h>
-# include <pthread.h>
+#include <stdio.h>
+#include <limits.h>
+#include <stdlib.h>
+#include <semaphore.h>
+#include <fcntl.h>
+#include <sys/types.h>
+#include <sys/wait.h>     
+#include <signal.h>
+#include <sys/time.h>
+#include <unistd.h>
+#include <pthread.h>
 
 # define MAX_PHILOSOPHERS 200
 
