@@ -6,7 +6,7 @@
 /*   By: sngantch <sngantch@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 21:21:36 by sngantch          #+#    #+#             */
-/*   Updated: 2025/04/01 21:30:45 by sngantch         ###   ########.fr       */
+/*   Updated: 2025/04/09 19:48:46 by sngantch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ typedef struct s_table
 	t_philo				philo[MAX_PHILOSOPHERS];
 	t_mutex				write_mutex;
 	t_mutex				death_mutex;
-	t_mutex				table_mutex;
+	// t_mutex				table_mutex;
 	t_mutex				monitor_mutex;
 	pthread_t			monitor_thread;
 }						t_table;
@@ -90,7 +90,6 @@ void					precise_usleep(long time, t_table *table);
 void					write_status(t_philo *philo, t_philo_status status);
 int						find_min(int a, int b);
 int						find_max(int a, int b);
-int						simulation(t_table *table);
 bool					is_simulation_over(t_table *table);
 void					cleanup_ressources(t_table *table);
 

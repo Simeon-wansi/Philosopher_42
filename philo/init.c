@@ -6,7 +6,7 @@
 /*   By: sngantch <sngantch@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 21:29:01 by sngantch          #+#    #+#             */
-/*   Updated: 2025/04/01 21:56:07 by sngantch         ###   ########.fr       */
+/*   Updated: 2025/04/09 19:36:16 by sngantch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ static int	mutex_initialisation(t_table *table)
 			return (1);
 		}
 	}
-	if (pthread_mutex_init(&table->table_mutex, NULL) != 0
-		|| pthread_mutex_init(&table->write_mutex, NULL) != 0
+	// pthread_mutex_init(&table->table_mutex, NULL) != 0
+	if ( pthread_mutex_init(&table->write_mutex, NULL) != 0
 		|| pthread_mutex_init(&table->monitor_mutex, NULL) != 0
 		|| pthread_mutex_init(&table->death_mutex, NULL) != 0)
 	{

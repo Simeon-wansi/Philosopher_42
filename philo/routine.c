@@ -6,7 +6,7 @@
 /*   By: sngantch <sngantch@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 12:55:23 by sngantch          #+#    #+#             */
-/*   Updated: 2025/04/09 19:08:40 by sngantch         ###   ########.fr       */
+/*   Updated: 2025/04/09 20:05:03 by sngantch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,27 +65,25 @@ static void	eat_sleep_think(t_philo *philo)
 
 bool	is_simulation_over(t_table *table)
 {
-	pthread_mutex_lock(&table->table_mutex);
-	if (table->death || table->all_ate)
-	{
-		pthread_mutex_unlock(&table->table_mutex);
-		return (true);
-	}
-	pthread_mutex_unlock(&table->table_mutex);
-	return (false);
+	bool res;
+	
+	pthread_mutex_lock(&table->death_mutex);
+	res = table->death || table->all_ate;
+	pthread_mutex_unlock(&table->death_mutex);
+	return (res);
 }
 
 void	*philo_routine(void *arg)
 {
-	t_philo	*philos;
+	t_philo	*philo;
 
-	philos = (t_philo *)arg;
-	if (philos->id % 2 == 0)
-		precise_usleep(philos->table->time_to_eat / 2, philos->table);
-	while (!is_simulation_over(philos->table))
+	philo = (t_philo *)arg;
+	if (philo->id % 2 == 0)
+		precise_usleep(philo->table->time_to_eat / 2, philo->table);
+	while (!is_simulation_over(philo->table))
 	{
-		eat_sleep_think(philos);
-		if (philos->table->philo_nbr == 1)
+		eat_sleep_think(philo);
+		if (philo->table->philo_nbr == 1)
 			break ;
 	}
 	return (arg);
