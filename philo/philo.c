@@ -6,15 +6,15 @@
 /*   By: sngantch <sngantch@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 15:04:37 by sngantch          #+#    #+#             */
-/*   Updated: 2025/03/31 16:24:45 by sngantch         ###   ########.fr       */
+/*   Updated: 2025/04/01 21:24:58 by sngantch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosopher.h"
-#include <math.h>
-
-
-// int	simulation(t_table *table)
+// #include "philosopher.h"
+// #include <math.h>
+// 
+// 
+// // int	simulation(t_table *table)
 // {
 // 	pthread_t	monitor_thread;
 // 	int			id;
@@ -44,7 +44,7 @@
 // int join_threads(t_table *table, pthread_t monitor_thread)
 // {
 // 	int i;
-	
+	// 
 // 	i = -1;
 // 	while (++i < table->philo_nbr)
 // 	{
@@ -65,12 +65,12 @@
 // 	philo = (t_philo *)arg;
 // 	if (philo->id % 2 == 0)
 // 		usleep(philo->table->time_to_eat / 10);
-		
+		// 
 // 	while (!philo->full && !is_simulation_over(philo->table))
 // 	{
 // 		first_fork = fmin(philo->left_fork, philo->right_fork);
 // 		second_fork = fmax(philo->left_fork, philo->right_fork);
-		
+		// 
 // 		pthread_mutex_lock(&philo->table->fork_mutex[first_fork]);
 // 		if (is_simulation_over(philo->table))
 // 		{
@@ -107,7 +107,7 @@
 // 	return (NULL);
 // }
 
-
+// 
 // static void	eat(t_philo *philo)
 // {
 // 	pthread_mutex_lock(&philo->philo_mutex);
@@ -117,9 +117,9 @@
 // 	if (philo->meal_counter == philo->table->nbr_limit_meal)
 // 		philo->full = true;
 // 	pthread_mutex_unlock(&philo->philo_mutex);
-	
+	// 
 // 	precise_usleep(philo->table->time_to_eat, philo->table);
-	
+	// 
 // }
 
 // void	sleeping(t_philo *philo)
@@ -131,9 +131,4 @@
 // void	thinking(t_philo *philo)
 // {
 // 	write_status(philo, THINKING);
-// }
-
-
-
-
-
+// 
