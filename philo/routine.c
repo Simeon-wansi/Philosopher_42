@@ -6,7 +6,7 @@
 /*   By: sngantch <sngantch@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 12:55:23 by sngantch          #+#    #+#             */
-/*   Updated: 2025/04/09 20:05:03 by sngantch         ###   ########.fr       */
+/*   Updated: 2025/04/09 21:19:21 by sngantch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,9 @@ bool	is_simulation_over(t_table *table)
 {
 	bool res;
 	
-	pthread_mutex_lock(&table->death_mutex);
+	pthread_mutex_lock(&table->stop_mutex);
 	res = table->death || table->all_ate;
-	pthread_mutex_unlock(&table->death_mutex);
+	pthread_mutex_unlock(&table->stop_mutex);
 	return (res);
 }
 

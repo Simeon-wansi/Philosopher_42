@@ -6,7 +6,7 @@
 /*   By: sngantch <sngantch@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 21:21:36 by sngantch          #+#    #+#             */
-/*   Updated: 2025/04/09 19:48:46 by sngantch         ###   ########.fr       */
+/*   Updated: 2025/04/09 21:18:30 by sngantch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@ typedef struct s_table
 	t_mutex				fork_mutex[MAX_PHILOSOPHERS];
 	t_philo				philo[MAX_PHILOSOPHERS];
 	t_mutex				write_mutex;
-	t_mutex				death_mutex;
-	// t_mutex				table_mutex;
-	t_mutex				monitor_mutex;
+	t_mutex				stop_mutex;
+	t_mutex				table_mutex;
+	t_mutex				time_mutex;
 	pthread_t			monitor_thread;
 }						t_table;
 

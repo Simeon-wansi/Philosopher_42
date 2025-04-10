@@ -6,7 +6,7 @@
 /*   By: sngantch <sngantch@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 21:29:01 by sngantch          #+#    #+#             */
-/*   Updated: 2025/04/09 19:36:16 by sngantch         ###   ########.fr       */
+/*   Updated: 2025/04/09 21:18:47 by sngantch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ static int	mutex_initialisation(t_table *table)
 	}
 	// pthread_mutex_init(&table->table_mutex, NULL) != 0
 	if ( pthread_mutex_init(&table->write_mutex, NULL) != 0
-		|| pthread_mutex_init(&table->monitor_mutex, NULL) != 0
-		|| pthread_mutex_init(&table->death_mutex, NULL) != 0)
+		|| pthread_mutex_init(&table->stop_mutex, NULL) != 0
+		|| pthread_mutex_init(&table->time_mutex, NULL) != 0)
 	{
 		printf("Mutex initialisation failed\n");
 		return (1);

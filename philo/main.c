@@ -6,7 +6,7 @@
 /*   By: sngantch <sngantch@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 21:10:18 by sngantch          #+#    #+#             */
-/*   Updated: 2025/04/09 19:35:53 by sngantch         ###   ########.fr       */
+/*   Updated: 2025/04/09 21:35:20 by sngantch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ void	cleanup_ressources(t_table *table)
 	}
 	// pthread_mutex_destroy(&table->table_mutex);
 	pthread_mutex_destroy(&table->write_mutex);
-	pthread_mutex_destroy(&table->monitor_mutex);
-	pthread_mutex_destroy(&table->death_mutex);
+	pthread_mutex_destroy(&table->stop_mutex);
+	pthread_mutex_destroy(&table->time_mutex);
 }
 
 int	main(int ac, char **av)
