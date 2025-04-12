@@ -48,7 +48,7 @@ static void	eat_sleep_think(t_philo *philo)
 	if (fork_assign(philo) != 0)
 		return ;
 	write_status(philo, EATING);
-	philo->is_eating = true; // Move this
+	philo->is_eating = true;
 	pthread_mutex_lock(&philo->meal_mutex);
 	philo->last_meal_time = gettime();
 	precise_usleep(philo->table->time_to_eat, philo->table);
@@ -56,7 +56,7 @@ static void	eat_sleep_think(t_philo *philo)
 	if (philo->meal_counter == philo->table->nbr_limit_meal)
 		philo->full = true;
 	pthread_mutex_unlock(&philo->meal_mutex);
-	philo->is_eating = false; // Move this
+	philo->is_eating = false;
 	release_fork(philo);
 	write_status(philo, SLEEPING);
 	precise_usleep(philo->table->time_to_sleep, philo->table);
@@ -65,8 +65,8 @@ static void	eat_sleep_think(t_philo *philo)
 
 bool	is_simulation_over(t_table *table)
 {
-	bool res;
-	
+	bool	res;
+
 	pthread_mutex_lock(&table->stop_mutex);
 	res = table->death || table->all_ate;
 	pthread_mutex_unlock(&table->stop_mutex);

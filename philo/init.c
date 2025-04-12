@@ -27,8 +27,7 @@ static int	mutex_initialisation(t_table *table)
 			return (1);
 		}
 	}
-	// pthread_mutex_init(&table->table_mutex, NULL) != 0
-	if ( pthread_mutex_init(&table->write_mutex, NULL) != 0
+	if (pthread_mutex_init(&table->write_mutex, NULL) != 0
 		|| pthread_mutex_init(&table->stop_mutex, NULL) != 0
 		|| pthread_mutex_init(&table->time_mutex, NULL) != 0)
 	{

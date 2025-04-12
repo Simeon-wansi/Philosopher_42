@@ -49,7 +49,6 @@ void	cleanup_ressources(t_table *table)
 		pthread_mutex_destroy(&table->philo[i].philo_mutex);
 		pthread_mutex_destroy(&table->philo[i].meal_mutex);
 	}
-	// pthread_mutex_destroy(&table->table_mutex);
 	pthread_mutex_destroy(&table->write_mutex);
 	pthread_mutex_destroy(&table->stop_mutex);
 	pthread_mutex_destroy(&table->time_mutex);
