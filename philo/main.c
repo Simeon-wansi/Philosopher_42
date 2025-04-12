@@ -17,21 +17,21 @@ void	write_status(t_philo *philo, t_philo_status status)
 	long	elapsed;
 
 	pthread_mutex_lock(&philo->table->write_mutex);
-	elapsed = gettime() - philo->table->start_simulation;
-	if (philo->full)
+	if (get_simulation_end(philo->table) && status != DIED)
 	{
 		pthread_mutex_unlock(&philo->table->write_mutex);
 		return ;
 	}
-	if (status == TAKE_LEFT_FORK && !philo->table->death)
+	elapsed = gettime() - philo->table->start_simulation;
+	if (status == TAKE_LEFT_FORK)
 		printf("%-6ld %d has taken a fork\n", elapsed, philo->id);
-	else if (status == TAKE_RIGHT_FORK && !philo->table->death)
+	else if (status == TAKE_RIGHT_FORK)
 		printf("%-6ld %d has taken a fork\n", elapsed, philo->id);
-	else if (status == EATING && !philo->table->death)
+	else if (status == EATING )
 		printf("%-6ld %d is eating\n", elapsed, philo->id);
-	else if (status == SLEEPING && !philo->table->death)
+	else if (status == SLEEPING)
 		printf("%-6ld %d is sleeping\n", elapsed, philo->id);
-	else if (status == THINKING && !philo->table->death)
+	else if (status == THINKING)
 		printf("%-6ld %d is thinking\n", elapsed, philo->id);
 	else if (status == DIED)
 		printf("%-6ld %d is dead\n", elapsed, philo->id);

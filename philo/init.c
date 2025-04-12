@@ -50,7 +50,6 @@ int	data_init(t_table *table)
 		table->philo[i].table = table;
 		table->philo[i].meal_counter = 0;
 		table->philo[i].full = false;
-		table->philo[i].is_eating = false;
 		table->philo[i].last_meal_time = gettime();
 		table->philo[i].left_fork = i;
 		table->philo[i].right_fork = (i + 1) % table->philo_nbr;

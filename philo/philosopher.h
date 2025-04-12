@@ -31,7 +31,6 @@ typedef struct s_philo
 	pthread_t			thread_id;
 	t_table				*table;
 
-	bool				is_eating;
 	bool				full;
 	long				meal_counter;
 	long				last_meal_time;
@@ -93,4 +92,7 @@ int						find_max(int a, int b);
 bool					is_simulation_over(t_table *table);
 void					cleanup_ressources(t_table *table);
 
+
+/*Monitor*/
+bool	get_simulation_end(t_table *table);
 #endif

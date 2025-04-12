@@ -12,7 +12,7 @@
 
 #include "philosopher.h"
 
-static bool	get_simulation_end(t_table *table)
+bool	get_simulation_end(t_table *table)
 {
 	bool	ret;
 
@@ -56,21 +56,26 @@ static int	check_philosopher_death(t_table *table, int i)
 	int		ret;
 
 	ret = 0;
-	pthread_mutex_lock(&table->philo[i].philo_mutex);
-	pthread_mutex_lock(&table->time_mutex);
+	pthread_mutex_lock(&table->philo[i].meal_mutex);
 	time = gettime() - table->philo[i].last_meal_time;
-	if (time > table->time_to_die && !get_simulation_end(table))
+	pthread_mutex_unlock(&table->philo[i].meal_mutex);
+
+	pthread_mutex_lock(&table->stop_mutex);
+	if (time > table->time_to_die && !table->death)
 	{
+		pthread_mutex_unlock(&table->stop_mutex);
 		write_status(&table->philo[i], DIED);
 		pthread_mutex_lock(&table->stop_mutex);
 		table->death = true;
 		pthread_mutex_unlock(&table->stop_mutex);
 		ret = 1;
 	}
-	pthread_mutex_unlock(&table->time_mutex);
-	pthread_mutex_unlock(&table->philo[i].philo_mutex);
+	else
+		pthread_mutex_unlock(&table->stop_mutex);
+	
 	return (ret);
 }
+
 
 static int	check_dead_philos(t_table *table)
 {
@@ -87,14 +92,19 @@ static int	check_dead_philos(t_table *table)
 
 void	*monitor_routine(void *arg)
 {
+	long check_interval;
 	t_table	*table;
-
+	
 	table = (t_table *)arg;
+	check_interval = table->time_to_die / 10;
 	while (1)
 	{
 		if (check_dead_philos(table) || all_philos_have_eaten(table))
 			break ;
-		usleep(1000);
+		if (check_interval > 1000)
+			usleep(check_interval);
+		else
+			usleep(1000);
 	}
 	return (arg);
 }

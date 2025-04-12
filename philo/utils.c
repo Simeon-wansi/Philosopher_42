@@ -33,7 +33,7 @@ void	precise_usleep(long time, t_table *table)
 	long	remaining;
 
 	start = gettime();
-	while (!table->death)
+	while (!get_simulation_end(table))
 	{
 		elapsed = gettime() - start;
 		if (elapsed >= time)
