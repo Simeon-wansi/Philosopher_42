@@ -48,18 +48,17 @@ static void	eat_sleep_think(t_philo *philo)
 	if (fork_assign(philo) != 0)
 		return ;
 	write_status(philo, EATING);
-	
 	pthread_mutex_lock(philo->meal_mutex);
-	philo->is_eating =  true;
+	philo->is_eating = true;
 	philo->last_meal_time = gettime();
 	philo->meal_counter++;
-	if (philo->table->nbr_limit_meal != -1 &&
-		philo->meal_counter >= philo->table->nbr_limit_meal)
+	if (philo->table->nbr_limit_meal != -1
+		&& philo->meal_counter >= philo->table->nbr_limit_meal)
 		philo->full = true;
 	pthread_mutex_unlock(philo->meal_mutex);
 	precise_usleep(philo->table->time_to_eat);
 	pthread_mutex_lock(philo->meal_mutex);
-	philo->is_eating =  false;
+	philo->is_eating = false;
 	pthread_mutex_unlock(philo->meal_mutex);
 	release_fork(philo);
 	write_status(philo, SLEEPING);
@@ -89,8 +88,8 @@ void	*philo_routine(void *arg)
 	while (philos_are_living(philo))
 	{
 		pthread_mutex_lock(philo->meal_mutex);
-		if (philo->table->nbr_limit_meal != -1 &&
-			philo->meal_counter >= philo->table->nbr_limit_meal)
+		if (philo->table->nbr_limit_meal != -1
+			&& philo->meal_counter >= philo->table->nbr_limit_meal)
 		{
 			pthread_mutex_unlock(philo->meal_mutex);
 			break ;

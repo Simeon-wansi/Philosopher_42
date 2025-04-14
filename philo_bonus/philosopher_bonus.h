@@ -62,14 +62,11 @@ typedef enum s_philo_status
 int			parse_input(t_philo *philo, char **av);
 int			init_semaphores(t_philo *philo);
 int			simulation(t_philo *philo);
-
-/* Utils func*/
 long		gettime(void);
 void		write_status(t_philo *philo, t_philo_status status);
 void		clean_semaphores(t_philo *philo);
 void		exit_error(const char *str);
 int			is_space(char c);
-
 void		wait_for_simulation_to_end(t_philo *philo);
 void		*death_monitor(void *arg);
 void		precise_usleep(long time);

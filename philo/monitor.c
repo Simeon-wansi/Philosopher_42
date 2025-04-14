@@ -35,13 +35,12 @@ static int	all_philos_have_eaten(t_philo *philo)
 	return (1);
 }
 
-
-static int is_philos_dead(t_philo *philo)
+static int	is_philos_dead(t_philo *philo)
 {
-	long time;
+	long	time;
 
 	pthread_mutex_lock(philo->meal_mutex);
-	time  = gettime() - philo->last_meal_time;
+	time = gettime() - philo->last_meal_time;
 	if (time > philo->table->time_to_die && philo->is_eating == false)
 	{
 		pthread_mutex_unlock(philo->meal_mutex);
@@ -65,7 +64,7 @@ static int	check_dead_philos(t_philo *philo)
 			*philo->dead = true;
 			pthread_mutex_unlock(philo->death_mutex);
 			return (1);
-		}	
+		}
 	}
 	return (0);
 }
@@ -74,7 +73,7 @@ void	*monitor_routine(void *arg)
 {
 	long	check_interval;
 	t_table	*table;
-	t_philo *philos;
+	t_philo	*philos;
 
 	table = (t_table *)arg;
 	philos = table->philo;

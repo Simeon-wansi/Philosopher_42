@@ -35,10 +35,10 @@ static int	mutex_initialisation(t_table *table)
 	return (0);
 }
 
-static void init_philos(t_table *table)
+static void	init_philos(t_table *table)
 {
-	int	i;
-	t_philo *philos;
+	int		i;
+	t_philo	*philos;
 
 	philos = table->philo;
 	i = -1;
@@ -46,7 +46,7 @@ static void init_philos(t_table *table)
 	{
 		philos[i].id = i + 1;
 		philos[i].table = table;
-		philos[i].is_eating =  false;
+		philos[i].is_eating = false;
 		philos[i].meal_counter = 0;
 		philos[i].full = false;
 		philos[i].last_meal_time = gettime();
@@ -61,7 +61,12 @@ static void init_philos(t_table *table)
 
 int	data_init(t_table *table)
 {
-	
+	table->philo = malloc(sizeof(t_philo) * table->philo_nbr);
+	if (!table->philo)
+		exit_error("❌ Malloc allocation failed\n");
+	table->fork_mutex = malloc(sizeof(pthread_mutex_t) * table->philo_nbr);
+	if (!table->fork_mutex)
+		exit_error("❌ Malloc allocation failed\n");
 	if (mutex_initialisation(table) != 0)
 		return (1);
 	table->dead = false;

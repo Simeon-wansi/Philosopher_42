@@ -16,6 +16,13 @@ void	write_status(t_philo *philo, t_philo_status status)
 {
 	long	elapsed;
 
+	pthread_mutex_lock(philo->death_mutex);
+	if (*philo->dead == true)
+	{
+		pthread_mutex_unlock(philo->death_mutex);
+		return ;
+	}
+	pthread_mutex_unlock(philo->death_mutex);
 	pthread_mutex_lock(philo->write_mutex);
 	if (philos_are_living(philo))
 	{
@@ -41,12 +48,14 @@ void	cleanup_ressources(t_table *table)
 	i = -1;
 	while (++i < table->philo_nbr)
 	{
-		if (pthread_mutex_destroy(&table->fork_mutex[i])!= 0)
+		if (pthread_mutex_destroy(&table->fork_mutex[i]) != 0)
 			exit_error("Error: Detroy mutex failed");
 	}
 	pthread_mutex_destroy(&table->write_mutex);
 	pthread_mutex_destroy(&table->death_mutex);
 	pthread_mutex_destroy(&table->meal_mutex);
+	free(table->philo);
+	free(table->fork_mutex);
 }
 
 int	main(int ac, char **av)

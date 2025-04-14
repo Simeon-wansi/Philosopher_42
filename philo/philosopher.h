@@ -19,7 +19,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/time.h>
-# include <unistd.h> //usleep
+# include <unistd.h> 
 # define MAX_PHILOSOPHERS 200
 
 typedef pthread_mutex_t	t_mutex;
@@ -53,13 +53,11 @@ typedef struct s_table
 	long				start_simulation;
 	bool				dead;
 	bool				all_ate;
-	t_mutex				fork_mutex[MAX_PHILOSOPHERS];
-	t_philo				philo[MAX_PHILOSOPHERS];
+	t_mutex				*fork_mutex;
+	t_philo				*philo;
 	t_mutex				write_mutex;
 	t_mutex				death_mutex;
 	t_mutex				meal_mutex;
-	// t_mutex				table_mutex;
-	// t_mutex				time_mutex;
 	pthread_t			monitor_thread;
 }						t_table;
 
@@ -78,7 +76,6 @@ int						data_init(t_table *table);
 
 /*Parsing func*/
 int						parse_input(t_table *table, char **av);
-
 void					exit_error(const char *str);
 long					gettime(void);
 
@@ -88,18 +85,17 @@ int						join_threads(t_table *table);
 
 /*Utils func*/
 int						precise_usleep(long time);
-void					*philo_routine(void *arg);
-void					*monitor_routine(void *arg);
-int						philos_are_living(t_philo *philo);
+
 void					write_status(t_philo *philo, t_philo_status status);
 int						find_min(int a, int b);
 int						find_max(int a, int b);
-bool					is_simulation_over(t_table *table);
 void					cleanup_ressources(t_table *table);
 
 /*Monitor*/
-bool					get_simulation_end(t_table *table);
+void					*monitor_routine(void *arg);
+int						philos_are_living(t_philo *philo);
 
 /*Routine*/
+void					*philo_routine(void *arg);
 int						philos_are_living(t_philo *philo);
 #endif
