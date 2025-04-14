@@ -6,7 +6,7 @@ SRCS =    init.c	main.c	monitor.c  parsing.c   routine.c     thread_managing.c  
 OBJS = $(SRCS:.c=.o)
 
 CC =  cc
-CFLAGS = -Wall -Wextra -Werror -pthread
+CFLAGS = -Wall -Wextra -Werror -pthread -fsanitize=thread -g3
 
 RM =  rm -f
 

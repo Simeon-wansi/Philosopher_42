@@ -19,14 +19,14 @@ int	create_threads(t_table *table)
 	i = -1;
 	while (++i < table->philo_nbr)
 	{
-		if (pthread_create(&table->philo[i].thread_id, NULL, philo_routine,
+		if (pthread_create(&table->philo[i].thread_id, NULL, &philo_routine,
 				&table->philo[i]) != 0)
 		{
-			printf("Thread creation failed\n");
+			printf("Philos Thread creation failed\n");
 			return (1);
 		}
 	}
-	if (pthread_create(&table->monitor_thread, NULL, monitor_routine,
+	if (pthread_create(&table->monitor_thread, NULL, &monitor_routine,
 			table) != 0)
 	{
 		printf("Monitor Thread creation failed\n");

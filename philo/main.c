@@ -16,26 +16,22 @@ void	write_status(t_philo *philo, t_philo_status status)
 {
 	long	elapsed;
 
-	pthread_mutex_lock(&philo->table->write_mutex);
-	if (get_simulation_end(philo->table) && status != DIED)
+	pthread_mutex_lock(philo->write_mutex);
+	if (philos_are_living(philo))
 	{
-		pthread_mutex_unlock(&philo->table->write_mutex);
-		return ;
+		elapsed = gettime() - philo->table->start_simulation;
+		if (status == TAKE_LEFT_FORK || status == TAKE_RIGHT_FORK)
+			printf("%-6ld %d has taken a fork\n", elapsed, philo->id);
+		else if (status == EATING)
+			printf("%-6ld %d is eating\n", elapsed, philo->id);
+		else if (status == SLEEPING)
+			printf("%-6ld %d is sleeping\n", elapsed, philo->id);
+		else if (status == THINKING)
+			printf("%-6ld %d is thinking\n", elapsed, philo->id);
+		else if (status == DIED)
+			printf("%-6ld %d is dead\n", elapsed, philo->id);
 	}
-	elapsed = gettime() - philo->table->start_simulation;
-	if (status == TAKE_LEFT_FORK)
-		printf("%-6ld %d has taken a fork\n", elapsed, philo->id);
-	else if (status == TAKE_RIGHT_FORK)
-		printf("%-6ld %d has taken a fork\n", elapsed, philo->id);
-	else if (status == EATING )
-		printf("%-6ld %d is eating\n", elapsed, philo->id);
-	else if (status == SLEEPING)
-		printf("%-6ld %d is sleeping\n", elapsed, philo->id);
-	else if (status == THINKING)
-		printf("%-6ld %d is thinking\n", elapsed, philo->id);
-	else if (status == DIED)
-		printf("%-6ld %d is dead\n", elapsed, philo->id);
-	pthread_mutex_unlock(&philo->table->write_mutex);
+	pthread_mutex_unlock(philo->write_mutex);
 }
 
 void	cleanup_ressources(t_table *table)
@@ -45,13 +41,12 @@ void	cleanup_ressources(t_table *table)
 	i = -1;
 	while (++i < table->philo_nbr)
 	{
-		pthread_mutex_destroy(&table->fork_mutex[i]);
-		pthread_mutex_destroy(&table->philo[i].philo_mutex);
-		pthread_mutex_destroy(&table->philo[i].meal_mutex);
+		if (pthread_mutex_destroy(&table->fork_mutex[i])!= 0)
+			exit_error("Error: Detroy mutex failed");
 	}
 	pthread_mutex_destroy(&table->write_mutex);
-	pthread_mutex_destroy(&table->stop_mutex);
-	pthread_mutex_destroy(&table->time_mutex);
+	pthread_mutex_destroy(&table->death_mutex);
+	pthread_mutex_destroy(&table->meal_mutex);
 }
 
 int	main(int ac, char **av)
@@ -60,8 +55,8 @@ int	main(int ac, char **av)
 
 	if (!(ac == 5 || ac == 6))
 	{
-		printf("Error :Do./philo [number_of_philos][time_to_die][time_to_eat]");
-		printf("[time_to_sleep] [number_of_times_each_philosopher_must_eat]\n");
+		printf("❌Error: Do./philo [number_of_philo][time_to_die][time_to_eat]");
+		printf("[time_to_sleep][number_of_times_each_philosopher_must_eat]");
 		return (1);
 	}
 	if (parse_input(&table, av) != 0)

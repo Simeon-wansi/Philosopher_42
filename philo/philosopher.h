@@ -32,12 +32,15 @@ typedef struct s_philo
 	t_table				*table;
 
 	bool				full;
+	bool				is_eating;
 	long				meal_counter;
 	long				last_meal_time;
 	int					right_fork;
 	int					left_fork;
-	t_mutex				meal_mutex;
-	t_mutex				philo_mutex;
+	bool				*dead;
+	t_mutex				*write_mutex;
+	t_mutex				*death_mutex;
+	t_mutex				*meal_mutex;
 }						t_philo;
 
 typedef struct s_table
@@ -48,14 +51,15 @@ typedef struct s_table
 	long				time_to_sleep;
 	long				nbr_limit_meal;
 	long				start_simulation;
-	bool				death;
+	bool				dead;
 	bool				all_ate;
 	t_mutex				fork_mutex[MAX_PHILOSOPHERS];
 	t_philo				philo[MAX_PHILOSOPHERS];
 	t_mutex				write_mutex;
-	t_mutex				stop_mutex;
-	t_mutex				table_mutex;
-	t_mutex				time_mutex;
+	t_mutex				death_mutex;
+	t_mutex				meal_mutex;
+	// t_mutex				table_mutex;
+	// t_mutex				time_mutex;
 	pthread_t			monitor_thread;
 }						t_table;
 
@@ -83,16 +87,19 @@ int						create_threads(t_table *table);
 int						join_threads(t_table *table);
 
 /*Utils func*/
+int						precise_usleep(long time);
 void					*philo_routine(void *arg);
 void					*monitor_routine(void *arg);
-void					precise_usleep(long time, t_table *table);
+int						philos_are_living(t_philo *philo);
 void					write_status(t_philo *philo, t_philo_status status);
 int						find_min(int a, int b);
 int						find_max(int a, int b);
 bool					is_simulation_over(t_table *table);
 void					cleanup_ressources(t_table *table);
 
-
 /*Monitor*/
-bool	get_simulation_end(t_table *table);
+bool					get_simulation_end(t_table *table);
+
+/*Routine*/
+int						philos_are_living(t_philo *philo);
 #endif

@@ -26,24 +26,14 @@ long	gettime(void)
 	return ((t.tv_sec * 1e3) + (t.tv_usec / 1e3));
 }
 
-void	precise_usleep(long time, t_table *table)
+int	precise_usleep(long time)
 {
 	long	start;
-	long	elapsed;
-	long	remaining;
 
 	start = gettime();
-	while (!get_simulation_end(table))
-	{
-		elapsed = gettime() - start;
-		if (elapsed >= time)
-			break ;
-		remaining = time - elapsed;
-		if (remaining > 1e3)
-			usleep(1e3);
-		else
-			usleep(remaining);
-	}
+	while ((gettime() - start) < time)
+		usleep(500);
+	return (0);
 }
 
 int	find_min(int a, int b)
